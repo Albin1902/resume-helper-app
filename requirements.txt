@@ -1,0 +1,4 @@
+streamlit
+pdfminer.six
+python-docx
+openai  # for LLM generation (optional for later)
