@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import streamlit as st
 from utils.parser import extract_text_from_file
-from utils.gemini_generator import generate_tailored_resume, generate_cover_letter
+from utils.openai_generator import generate_tailored_resume, generate_cover_letter
 
 st.set_page_config(page_title="AI Resume & Cover Letter Generator", layout="centered")
 st.title("📄 AI Resume & Cover Letter Generator")
