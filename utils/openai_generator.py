@@ -1,15 +1,15 @@
-import openai
 import os
+from openai import OpenAI
+from dotenv import load_dotenv
 
-# Option 1: use environment variable
-openai.api_key = os.getenv("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")
+# Load environment variables
+load_dotenv()
 
-# Option 2 (unsafe): hardcode temporarily
-# openai.api_key = "your-openai-api-key"
+# Initialize OpenAI client using API key
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_tailored_resume(resume_text, job_desc):
-    prompt = f"""
-You're a resume optimization expert. Rewrite the resume below so it better aligns with the job description. Emphasize relevant skills, keywords, and responsibilities.
+    prompt = f"""You're a resume optimization expert. Rewrite the resume below to better align with the job description. Make it sound more relevant and ATS-optimized.
 
 Resume:
 {resume_text}
@@ -17,18 +17,20 @@ Resume:
 Job Description:
 {job_desc}
 
-Tailored Resume:
-"""
-    response = openai.ChatCompletion.create(
+Tailored Resume:"""
+
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
         temperature=0.7
     )
-    return response['choices'][0]['message']['content'].strip()
+
+    return response.choices[0].message.content.strip()
 
 def generate_cover_letter(resume_text, job_desc):
-    prompt = f"""
-Write a compelling, personalized cover letter based on the following resume and job description.
+    prompt = f"""You're a professional career writer. Based on the resume and job description below, write a short, tailored, and impactful cover letter.
 
 Resume:
 {resume_text}
@@ -36,11 +38,14 @@ Resume:
 Job Description:
 {job_desc}
 
-Cover Letter:
-"""
-    response = openai.ChatCompletion.create(
+Cover Letter:"""
+
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
         temperature=0.7
     )
-    return response['choices'][0]['message']['content'].strip()
+
+    return response.choices[0].message.content.strip()
