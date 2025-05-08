@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize OpenAI client using API key
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("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"))
 
 def generate_tailored_resume(resume_text, job_desc):
     prompt = f"""You're a resume optimization expert. Rewrite the resume below to better align with the job description. Make it sound more relevant and ATS-optimized.
