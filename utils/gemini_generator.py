@@ -2,7 +2,7 @@ import openai
 import os
 
 # Option 1: use environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("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")
 
 # Option 2 (unsafe): hardcode temporarily
 # openai.api_key = "your-openai-api-key"
