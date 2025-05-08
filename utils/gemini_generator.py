@@ -1,44 +1,46 @@
-import google.generativeai as genai
+import openai
+import os
 
-# Configure Gemini API
-genai.configure(api_key="AIzaSyCc7ihu4uLsyDxfRirnJ-onXRha8gV4RPA")  # Replace with your key
+# Option 1: use environment variable
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Load model
-model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
+# Option 2 (unsafe): hardcode temporarily
+# openai.api_key = "your-openai-api-key"
 
-def generate_tailored_resume(resume_text, jd_text):
+def generate_tailored_resume(resume_text, job_desc):
     prompt = f"""
-You are a professional resume writer. Improve and tailor the following resume for the job description provided.
+You're a resume optimization expert. Rewrite the resume below so it better aligns with the job description. Emphasize relevant skills, keywords, and responsibilities.
 
 Resume:
 {resume_text}
 
 Job Description:
-{jd_text}
+{job_desc}
 
-Rewrite the resume to focus only on the relevant skills and experiences. Optimize for clarity, action verbs, and ATS keyword matching.
-Output only the improved resume.
+Tailored Resume:
 """
-    try:
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"❌ Error generating tailored resume: {e}"
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7
+    )
+    return response['choices'][0]['message']['content'].strip()
 
-def generate_cover_letter(resume_text, jd_text):
+def generate_cover_letter(resume_text, job_desc):
     prompt = f"""
-Using the following resume and job description, write a personalized cover letter for the job.
+Write a compelling, personalized cover letter based on the following resume and job description.
 
 Resume:
 {resume_text}
 
 Job Description:
-{jd_text}
+{job_desc}
 
-Address the letter to 'Hiring Manager'. Keep it professional, enthusiastic, and relevant.
+Cover Letter:
 """
-    try:
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"❌ Error generating cover letter: {e}"
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7
+    )
+    return response['choices'][0]['message']['content'].strip()
